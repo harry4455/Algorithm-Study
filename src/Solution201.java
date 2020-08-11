@@ -17,14 +17,14 @@ public class Solution201 {
         int sco1 = 0, sco2 = 0;
         int temp = 0, times = 0;
 
-        Queue <Integer> pq = new PriorityQueue<Integer>(scoville.length);
+        Queue<Integer> pq = new PriorityQueue<Integer>(scoville.length);
 
-        for(int i=0; i<scoville.length; i++) {
+        for (int i = 0; i < scoville.length; i++) {
             pq.offer(scoville[i]);
         }
 
-        while(pq.size() > 1){
-            if(pq.peek() >= K) {
+        while (pq.size() > 1) {
+            if (pq.peek() >= K) {
                 answer = times;
                 break;
             }
@@ -36,7 +36,7 @@ public class Solution201 {
         }
 
         // 마지막 큐에 하나 남은 값이 K를 넘는지 확인
-        if(pq.poll() >= K){
+        if (pq.poll() >= K) {
             answer = times;
         }
 

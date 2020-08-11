@@ -12,9 +12,9 @@ public class Solution502 {
         Long temp;
         int cnt = 2;
 
-        while(cnt < N) {
+        while (cnt < N) {
 
-            for(int i=2; i<N; i++) {
+            for (int i = 2; i < N; i++) {
                 temp = b;
                 b += a;
                 a = temp;
@@ -25,7 +25,7 @@ public class Solution502 {
 
         }
 
-        answer = 2*(a+b) + 2*b;
+        answer = 2 * (a + b) + 2 * b;
 
 
         return answer;

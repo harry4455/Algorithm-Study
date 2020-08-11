@@ -10,11 +10,11 @@ public class Solution404 {
         int width = 0;
         int height = 0;
 
-        for(int i=1; i<= yellow/2+1; i++) {
+        for (int i = 1; i <= yellow / 2 + 1; i++) {
             width = i;
-            height = (yellow%i == 0) ? yellow/i : yellow/i+1;
+            height = (yellow % i == 0) ? yellow / i : yellow / i + 1;
 
-            if(width*2 + height*2 + 4 == brown) break;
+            if (width * 2 + height * 2 + 4 == brown) break;
         }
 
         return new int[]{Math.max(width, height) + 2, Math.min(width, height) + 2};

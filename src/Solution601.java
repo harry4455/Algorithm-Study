@@ -1,6 +1,6 @@
 public class Solution601 {
     public static void main(String[] args) {
-        int[] numbers = {1,1,1,1,1};
+        int[] numbers = {1, 1, 1, 1, 1};
         int target = 3;
 
         System.out.println(solution(numbers, target));
@@ -16,13 +16,13 @@ public class Solution601 {
 
     private static int dfs(int[] numbers, int node, int sum, int target) {
 
-        if(node == numbers.length) {
-            if(sum == target) {
+        if (node == numbers.length) {
+            if (sum == target) {
                 return 1;
             }
             return 0;
         }
 
-        return dfs(numbers, node+1, sum + numbers[node], target) + dfs(numbers, node+1, sum - numbers[node], target);
+        return dfs(numbers, node + 1, sum + numbers[node], target) + dfs(numbers, node + 1, sum - numbers[node], target);
     }
 }

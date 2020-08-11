@@ -22,18 +22,18 @@ public class Solution101 {
 
         int i = 0;
 
-        while( i < completion.length){
-            if(!completion[i].equals(participant[i])){
+        while (i < completion.length) {
+            if (!completion[i].equals(participant[i])) {
                 temp = participant[i];
                 break;
             } else {
                 i++;
             }
 
-            if(!temp.equals("")){
+            if (!temp.equals("")) {
                 answer = temp;
             } else {
-                answer = participant[participant.length-1];
+                answer = participant[participant.length - 1];
             }
         }
 

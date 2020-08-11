@@ -7,7 +7,7 @@ public class Solution305 {
 
     public static void main(String[] args) {
 
-        int[] prices = new int[]{1,2,3,2,3};
+        int[] prices = new int[]{1, 2, 3, 2, 3};
 
         System.out.println(Arrays.toString(solution(prices)));
     }
@@ -45,7 +45,7 @@ public class Solution305 {
             if (prices[i] > prices[i + 1]) {
 
                 answer[i] = 1;
-                stack.push(new int[] { prices[i + 1], i + 1 });
+                stack.push(new int[]{prices[i + 1], i + 1});
 
                 // 앞쪽의 숫자가 뒷쪽의 숫자보다 작거나 같은 경우
             } else {
@@ -67,7 +67,6 @@ public class Solution305 {
         }
 
         return answer;
-
 
 
     }

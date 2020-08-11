@@ -24,10 +24,12 @@ public class Solution202 {
         }
 
     }
+
     public static void main(String[] args) {
-        int[][] jobs = {{0,3},{1,9},{2,6}};
+        int[][] jobs = {{0, 3}, {1, 9}, {2, 6}};
         System.out.println(solution(jobs));
     }
+
     public static int solution(int[][] jobs) {
         LinkedList<Job> waiting = new LinkedList<>();
         // 작업시간을 기준으로 오름차순으로 정렬
@@ -39,7 +41,7 @@ public class Solution202 {
         });
 
         // 대기큐에 모든 작업을 넣는다.
-        for(int[] job : jobs) {
+        for (int[] job : jobs) {
             waiting.offer(new Job(job[0], job[1]));
         }
 
@@ -55,13 +57,13 @@ public class Solution202 {
         int cnt = 0;
         int time = waiting.peek().requestTime;
 
-        while(cnt < jobs.length) {
+        while (cnt < jobs.length) {
             // 현재 시간 이하의 요청시간을 가지는 작업을 모두 대기큐에서 작업 큐로 옮긴다.
-            while(!waiting.isEmpty() && waiting.peek().requestTime <= time) {
+            while (!waiting.isEmpty() && waiting.peek().requestTime <= time) {
                 pq.offer(waiting.pollFirst());
             }
 
-            if(!pq.isEmpty()) {
+            if (!pq.isEmpty()) {
                 Job job = pq.poll(); // 오름차순으로 정렬 되어 있어서 가장 작업시간이 짧은 작업이 꺼내짐
                 time += job.workingTime; // 현재 시간에 현재 작업의 작업시간을 더해줌
                 answer += time - job.requestTime; // 총 시간을 구하기 위해 더해나감

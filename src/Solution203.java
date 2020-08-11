@@ -10,21 +10,21 @@ import java.util.PriorityQueue;
 
 public class Solution203 {
     public static void main(String[] args) {
-        String[] operations = {"I 7","I 5","I -5","D -1"};
+        String[] operations = {"I 7", "I 5", "I -5", "D -1"};
         System.out.println(Arrays.toString(solution(operations)));
     }
 
     public static int[] solution(String[] operations) {
-        int[] answer = {0,0};
+        int[] answer = {0, 0};
         PriorityQueue<Integer> pqmax = new PriorityQueue<>(Comparator.reverseOrder());
         PriorityQueue<Integer> pqmin = new PriorityQueue<>();
 
-        for(String operation : operations) {
+        for (String operation : operations) {
             // String을 split 하는 과정
             String[] splitnum = operation.split(" ");
 
             // 앞글자가 I일 경우 queue에 값을 집어넣음
-            if(splitnum[0].equals("I")) {
+            if (splitnum[0].equals("I")) {
                 pqmax.add(Integer.parseInt(splitnum[1]));
                 pqmin.add(Integer.parseInt(splitnum[1]));
             }
@@ -32,10 +32,10 @@ public class Solution203 {
             System.out.println("pqmin : " + pqmin);
 
             // 앞글자가 D일 경우 경우에 따라 peek해주는 방식 요구
-            if(splitnum[0].equals("D")) {
-                if(!pqmax.isEmpty()) {
+            if (splitnum[0].equals("D")) {
+                if (!pqmax.isEmpty()) {
                     // 큐에서 최댓값을 삭제
-                    if(splitnum[1].equals("1")) {
+                    if (splitnum[1].equals("1")) {
                         int max = pqmax.peek();
                         pqmax.remove(max);
                         pqmin.remove(max);
@@ -48,7 +48,7 @@ public class Solution203 {
             }
         }
 
-        if(!pqmax.isEmpty()) {
+        if (!pqmax.isEmpty()) {
             answer[0] = pqmax.peek();
             answer[1] = pqmin.peek();
         }

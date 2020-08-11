@@ -11,24 +11,24 @@ public class Solution603 {
     }
 
     public static int solution(String begin, String target, String[] words) {
-        int answer = words.length+1; // 최대일 경우
+        int answer = words.length + 1; // 최대일 경우
         boolean[] visited = new boolean[words.length];
 
-        answer = dfs(begin, target, words, visited, 0, words.length+1, words.length);
+        answer = dfs(begin, target, words, visited, 0, words.length + 1, words.length);
 
-        return answer == words.length+1 ? 0 : answer;
+        return answer == words.length + 1 ? 0 : answer;
     }
 
     static int dfs(String begin, String target, String[] words, boolean[] visited, int n, int min, int max) {
 
-        for(int i=0; i<max; i++) {
-            if(!visited[i] && compareStrings(begin, words[i])){
-                if(words[i].equals(target)){
-                    return Math.min(min, n+1);
+        for (int i = 0; i < max; i++) {
+            if (!visited[i] && compareStrings(begin, words[i])) {
+                if (words[i].equals(target)) {
+                    return Math.min(min, n + 1);
                 }
                 visited[i] = true;
-                int num = dfs(words[i], target, words, visited, n+1, min, max);
-                if(num < min) min = num;
+                int num = dfs(words[i], target, words, visited, n + 1, min, max);
+                if (num < min) min = num;
                 visited[i] = true;
             }
         }
@@ -39,10 +39,10 @@ public class Solution603 {
 
         int tmp = 0;
 
-        for(int i=0; i<begin.length(); i++) {
-            if(begin.charAt(i) != word.charAt(i)){
+        for (int i = 0; i < begin.length(); i++) {
+            if (begin.charAt(i) != word.charAt(i)) {
                 tmp++;
-                if(tmp > 1) return false;
+                if (tmp > 1) return false;
             }
         }
 

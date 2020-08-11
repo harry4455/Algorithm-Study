@@ -5,7 +5,7 @@ public class Solution701 {
     public static void main(String[] args) {
 
         int n = 6;
-        int[] times = {7,10};
+        int[] times = {7, 10};
 
         System.out.println(solution(n, times));
 
@@ -18,18 +18,18 @@ public class Solution701 {
         long mid = 0;
         long answer = Long.MAX_VALUE;
 
-        while(start <= end) {
+        while (start <= end) {
             long sum = 0;
             mid = (start + end) / 2;
-            for(int time : times) {
+            for (int time : times) {
                 //System.out.println("time : " + time);
                 sum += mid / time;
                 //System.out.println("sum : " + sum);
             }
-            if(sum < n) {
-                start = mid+1;
+            if (sum < n) {
+                start = mid + 1;
             } else {
-                if(answer > mid) {
+                if (answer > mid) {
                     answer = mid;
                 }
                 end = mid - 1;
@@ -37,5 +37,5 @@ public class Solution701 {
         }
         return answer;
     }
-    
+
 }
