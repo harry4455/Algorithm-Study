@@ -5,8 +5,8 @@
 
 1. Programmers 알고리즘 연습문제  
   (https://programmers.co.kr/learn/challenges)     
-  Solution 101~  
-  Solution 201~  
+  Solution 101~104 // 해시(Hash)  
+  Solution 201~203 // 힙(Heap)  
   Solution 301~  
   Solution 401~  
   Solution 501~  
