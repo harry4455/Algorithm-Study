@@ -11,7 +11,7 @@
  */
 
 public class Solution_greedy03 {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         String name = "JEROEN";
         System.out.println(solution(name));
     }
@@ -74,5 +74,39 @@ public class Solution_greedy03 {
         } else {
             return up;
         }
+    }*/
+
+    public static void main(String[] args) {
+        String name = "JEROEN";
+        System.out.println(solution(name));
     }
+    public static int solution(String name) {
+        int answer = 0;
+
+        // 위 아래로만 이동, 최소한으로
+        for(int i=0; i<name.length(); i++) {
+            if(name.charAt(i) != 'A') {
+                int up = name.charAt(i) - 'A';
+                int down = 1 + 'Z' - name.charAt(i);
+                answer += (up < down) ? up : down;
+            }
+        }
+
+        // A가 아닌 모든 문자를 방문할 수 있는 최소 좌우 이동
+        // 모든 위치에서 역으로 돌아가는 경우에는 최소를 찾는다.
+        int minMove = name.length() - 1;
+        for(int i=0; i<name.length(); i++) {
+            if(name.charAt(i) != 'A') {
+                int next = i+1;
+                while(next < name.length() && name.charAt(next) == 'A') {
+                    next++;
+                }
+                int move = 2 * i + name.length() - next;
+                minMove = Math.min(move, minMove);
+            }
+        }
+
+        return answer + minMove;
+    }
+
 }
