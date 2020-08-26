@@ -10,7 +10,7 @@
 
  */
 
-public class Solution_greedy03 {
+public class Greedy03 {
     /*public static void main(String[] args) {
         String name = "JEROEN";
         System.out.println(solution(name));

@@ -5,7 +5,7 @@
 따라서 선택할 수 있는 범위에서 가장 큰 수를 찾아나가는 방식으로 진행하자.
 
  */
-public class Solution_greedy02 {
+public class Greedy02 {
     public static void main(String[] args) {
         String number = "1231234";
         int k = 3;
