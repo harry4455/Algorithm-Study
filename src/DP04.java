@@ -1,6 +1,6 @@
 // 동적계획법(Dynamic Programming) #4
 
-public class Solution_dp04 {
+public class DP04 {
     public static void main(String[] args) {
         int[] money = {1,2,3,1};
         System.out.println(solution(money));
