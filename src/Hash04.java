@@ -4,7 +4,7 @@
 
 import java.util.*;
 
-public class Solution104 {
+public class Hash04 {
 
     // Song이라는 객체 생성, 이를 기반으로 비교하기 때문에 comparator 연산자 활용
     class Song implements Comparable<Song> {

@@ -2,7 +2,7 @@
 
 import java.util.HashMap;
 
-public class Solution103 {
+public class Hash03 {
     public static void main(String[] args) {
         String[][] clothes = new String[][]{{"yellow_hat", "headgear"}, {"blue_sunglasses", "eyewear"}, {"green_turban", "headgear"}};
 

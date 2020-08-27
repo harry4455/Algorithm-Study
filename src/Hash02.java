@@ -1,6 +1,6 @@
 // 해시 문제 #2
 
-public class Solution102 {
+public class Hash02 {
     public static void main(String[] args) {
 
         String[] phone_book = new String[]{"119", "97674223", "1195524421"};

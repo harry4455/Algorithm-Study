@@ -3,7 +3,7 @@
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class Solution201 {
+public class Heap01 {
     public static void main(String[] args) {
 
         int[] scoville;

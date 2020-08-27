@@ -3,7 +3,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Solution301 {
+public class StackQueue01 {
 
     // truck에 대한 객체 생성(무게와 건너는데 걸리는 시간)
     static class Truck {

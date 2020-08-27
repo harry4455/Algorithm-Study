@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-public class Solution202 {
+public class Heap02 {
 
     private static class Job {
         int requestTime;

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class Solution203 {
+public class Heap03 {
     public static void main(String[] args) {
         String[] operations = {"I 7", "I 5", "I -5", "D -1"};
         System.out.println(Arrays.toString(solution(operations)));

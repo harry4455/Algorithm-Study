@@ -2,7 +2,7 @@
 
 import java.util.Arrays;
 
-public class Solution101 {
+public class Hash01 {
 
     public static void main(String[] args) {
 
