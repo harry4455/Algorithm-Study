@@ -24,8 +24,11 @@ public class BJ16500 {
 
         dp[words.length] = 1;
 
-        for(int pos = words.length - 1; pos >= 0; pos--) {
-            for (int j = 0; j <= N; j++) {
+        for(int pos = word.length() - 1; pos >= 0; pos--) {
+            int cnt = 0;
+            for (int j = 0; j < N; j++) {
+                //System.out.println(word.charAt(pos));
+                //System.out.println(words[j].charAt(0));
                 if ((word.charAt(pos) == words[j].charAt(0)) && (dp[pos + words[j].length()] == 1)) {
                     dp[pos] = 1;
                     break;
