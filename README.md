@@ -7,6 +7,7 @@
   (https://programmers.co.kr/learn/challenges)     
 
   
-2. 백준 기출문제
- - BJ123~~~ 으로 표기  
-지옥의 코테 준비 스터디 참여중
+2. 백준 알고리즘 연습문제  
+   (https://www.acmicpc.net/)
+ * BJ123~~~ 으로 표기  
+   지옥의 코테 준비 스터디 참여중
