@@ -1,3 +1,5 @@
+package BJ;
+
 import java.io.*;
 
 public class BJ10989 {
