@@ -6,8 +6,7 @@
 ● BJ  
 * 백준 알고리즘 연습문제  
 (https://www.acmicpc.net/)  
-  
-  지옥의 코테 준비 스터디 참여중  
+<지옥의 코테 준비 스터디 참여중>  
 
 ● PG
 * Programmers 알고리즘 연습문제  
