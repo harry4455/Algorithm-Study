@@ -9,5 +9,9 @@
 <지옥의 코테 준비 스터디 참여중>  
 
 ● PG
-* Programmers 알고리즘 연습문제  
+* 프로그래머스 알고리즘 연습문제  
+  (https://programmers.co.kr/learn/challenges)
+
+● 그 외 기출
+- 카카오기출문제 풀이  
   (https://programmers.co.kr/learn/challenges)
