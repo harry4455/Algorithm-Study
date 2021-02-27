@@ -18,6 +18,7 @@ public class BJ1509 {
 
         // index 계산을 편하게 하기 위한 방법
         s = " " + s;
+        //System.out.println(s);
         arr = new boolean[n+1][n+1];
         for(int i=1; i<=n; i++) {
             arr[i][i] = true;
