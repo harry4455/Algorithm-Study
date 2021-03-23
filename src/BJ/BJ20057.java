@@ -1,10 +1,13 @@
 /*
-
     #20057 마법사 상어와 토네이도
 
     삼성 역량테스트 기출문제
 
+    토네이도 방향으로 돌면서 나아가는 크기와 규칙이 1,1,2,2,3,3,4,4..... 등으로 나아감 => dc
+    4개의 방향을 움직일 수 있는 좌표 => dx, dy
+    모래가 퍼지는 방향을 4가지 방향의 경우에 맞추어 좌표로 표현해서 배열로 구성 => dsx, dsy
 
+    난이도가 높다기 보다는 빡세게 구현해야 했던 문제
 
  */
 
@@ -50,6 +53,61 @@ public class BJ20057 {
 
     private static int calculate(int x, int y) {
 
-        return 0;
+        int totalOutSand = 0;
+
+        int currentX = 0;
+        int currentY = 0;
+
+        while(true) {
+            for(int d=0; d<4; d++) {
+                for(int moveCnt = 0; moveCnt<dc[d]; moveCnt++) {
+                    // 현재 위치에서 이동
+                    int nextX = currentX + dx[d];
+                    int nextY = currentY + dy[d];
+
+                    if(nextX<0 || nextY<0 || nextX>=N || nextY>=N) {
+                        return totalOutSand;
+                    }
+
+                    // 이동한 위치에 모래 뿌리기
+                    int sand = A[nextX][nextY];
+                    A[nextX][nextY] = 0;
+                    int spreadTotal = 0;
+
+                    for(int spread = 0; spread<9; spread++) {
+                        int sandX = nextX + dsx[d][spread];
+                        int sandY = nextY + dsy[d][spread];
+                        int spreadAmount = (sand*sandRatio[spread])/100;
+
+                        if(sandX<0 || sandY<0 || sandX>=N || sandY>=N) {
+                            totalOutSand += spreadAmount;
+                        } else {
+                            A[sandX][sandY] += spreadAmount;
+                        }
+                        spreadTotal += spreadAmount;
+                    }
+
+                    // 알파 값
+                    int alphaX = nextX+dx[d];
+                    int alphaY = nextY+dy[d];
+                    int alphaAmount = sand - spreadTotal;
+                    if(alphaX<0 || alphaY<0 || alphaX>=N || alphaY>=N) {
+                        totalOutSand += alphaAmount;
+                    } else {
+                        A[alphaX][alphaY] += alphaAmount;
+                    }
+
+                    // 이동한 위치를 현재 위치로 갱신
+                    currentX = nextX;
+                    currentY = nextY;
+                }
+            }
+
+            // 횟수 업데이트
+            for(int index = 0; index<4; index++) {
+                dc[index] += 2;
+            }
+        }
+
     }
 }
