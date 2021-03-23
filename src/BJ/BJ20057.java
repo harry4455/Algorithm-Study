@@ -55,31 +55,32 @@ public class BJ20057 {
 
         int totalOutSand = 0;
 
-        int currentX = 0;
-        int currentY = 0;
+        int currentX = x;
+        int currentY = y;
 
-        while(true) {
-            for(int d=0; d<4; d++) {
-                for(int moveCnt = 0; moveCnt<dc[d]; moveCnt++) {
-                    // 현재 위치에서 이동
+        while (true) {
+            for (int d = 0; d < 4; d++) {
+                for (int moveCount = 0; moveCount < dc[d]; moveCount++) {
+                    // 현재위치에서 이동
                     int nextX = currentX + dx[d];
                     int nextY = currentY + dy[d];
 
-                    if(nextX<0 || nextY<0 || nextX>=N || nextY>=N) {
+                    if (nextX < 0 || nextY < 0 || nextX >= N || nextY >= N) {
                         return totalOutSand;
                     }
 
-                    // 이동한 위치에 모래 뿌리기
+                    // 이동한 위치의 모래 뿌리기
                     int sand = A[nextX][nextY];
                     A[nextX][nextY] = 0;
                     int spreadTotal = 0;
 
-                    for(int spread = 0; spread<9; spread++) {
+
+                    for (int spread = 0; spread < 9; spread++) {
                         int sandX = nextX + dsx[d][spread];
                         int sandY = nextY + dsy[d][spread];
-                        int spreadAmount = (sand*sandRatio[spread])/100;
+                        int spreadAmount = (sand * sandRatio[spread]) / 100;
 
-                        if(sandX<0 || sandY<0 || sandX>=N || sandY>=N) {
+                        if (sandX < 0 || sandX >= N || sandY < 0 || sandY >= N) {
                             totalOutSand += spreadAmount;
                         } else {
                             A[sandX][sandY] += spreadAmount;
@@ -87,24 +88,25 @@ public class BJ20057 {
                         spreadTotal += spreadAmount;
                     }
 
-                    // 알파 값
-                    int alphaX = nextX+dx[d];
-                    int alphaY = nextY+dy[d];
+                    // 알파
+                    int alphaX = nextX + dx[d];
+                    int alphaY = nextY + dy[d];
                     int alphaAmount = sand - spreadTotal;
-                    if(alphaX<0 || alphaY<0 || alphaX>=N || alphaY>=N) {
+                    if (alphaX < 0 || alphaX >= N || alphaY < 0 || alphaY >= N) {
                         totalOutSand += alphaAmount;
                     } else {
                         A[alphaX][alphaY] += alphaAmount;
                     }
 
-                    // 이동한 위치를 현재 위치로 갱신
+
+                    // 이동한 위치를 현재위치로 갱신
                     currentX = nextX;
                     currentY = nextY;
                 }
             }
 
             // 횟수 업데이트
-            for(int index = 0; index<4; index++) {
+            for (int index = 0; index < 4; index++) {
                 dc[index] += 2;
             }
         }
