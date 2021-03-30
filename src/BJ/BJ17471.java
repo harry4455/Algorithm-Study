@@ -30,21 +30,19 @@ public class BJ17471 {
         num = new int[N+1];
         link = new int[N+1][N+1];
 
-        /*for(int i=1; i<N+1; i++) {
-            stk = new StringTokenizer(br.readLine());
+        stk = new StringTokenizer(br.readLine());
+        for(int i=1; i<N+1; i++) {
             num[i] = Integer.parseInt(stk.nextToken());
-        }*/
+        }
 
-        System.out.println(Arrays.toString(num));
-
-        /*for(int i=1; i<=N; i++) {
+        for(int i=1; i<=N; i++) {
             stk = new StringTokenizer(br.readLine());
             int each = Integer.parseInt(stk.nextToken());
             for(int j=0; j<each; j++) {
                 int spot = Integer.parseInt(stk.nextToken());
                 link[i][spot] = 1;
             }
-        }*/
+        }
 
         MIN = Integer.MAX_VALUE;
 
