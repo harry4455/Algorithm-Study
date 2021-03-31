@@ -1,7 +1,7 @@
 /*
-    #
+    #17471 개리멘더링
 
-    1. 2개의 지역구로 나눌 수 있는 부분집합 구하기
+    1. 2개의 지역구로 나눌 수 있는 부분집합 구하기 (이것이 관건!!!)
     2. 지역구가 정상적을 나누어졌는지 확인하기
     3. 정상일 경우 인구수 차이를 구하여 최솟값 찾기
 
@@ -12,7 +12,6 @@ package BJ;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BJ17471 {
