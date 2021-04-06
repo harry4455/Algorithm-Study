@@ -1,13 +1,15 @@
 /*
     #17472 다리 만들기 2
 
-    처음에 감도 안와서 블로그 참고함
+    처음에 감도 안와서 블로그 참고함 (https://ju-nam2.tistory.com/120)
     mst (minimum spanning tree)를 활용하는 문제라고 해서 백준 1197 문제를 먼저 풀고 해당 문제 풀이 진행
 
     1. 각 섬에 번호를 붙여줌 (섬을 구분하기 위함) - bfs 활용
     2. 각 좌표에서 최대로 만들 수 있는 다리를 모두 만들어 우선순위 큐에 넣어준다.
-    (kruskal을 사용하기 위해 edge 클래스를 만들어 Comparable를 implement 해준다.)
+    (kruskal을 사용하기 위해 edge2 클래스를 만들어 Comparable를 implement 해준다.)
     3. kruskal 알고리즘을 이용해 최소 간선의 합을 구해준다.
+
+    ※1197 문제에도 edge class가 사용되고 같은 package 내에 존재해서 edge -> edge2로 변경
 
  */
 
@@ -31,7 +33,7 @@ public class BJ17472 {
     static int[] parents;
     static int[][] map;
     static boolean[][] visited;
-    static PriorityQueue<edge> pq = new PriorityQueue<edge>();
+    static PriorityQueue<edge2> pq = new PriorityQueue<edge2>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer stk = new StringTokenizer(br.readLine());
@@ -79,7 +81,7 @@ public class BJ17472 {
 
         int size = pq.size();
         for(int i=0; i<size; i++) {
-            edge tmp = pq.poll();
+            edge2 tmp = pq.poll();
 
             int a = find(tmp.s);
             int b = find(tmp.e);
@@ -142,7 +144,7 @@ public class BJ17472 {
                     } else {
                         // 길이가 1보다 크면 pq에 추가
                         if(length > 1) {
-                            pq.add(new edge(num, map[x2][y2], length));
+                            pq.add(new edge2(num, map[x2][y2], length));
                         }
                         length = 0;
                         x2 = d.x;
@@ -195,18 +197,18 @@ class dot {
 }
 
 // 간산 class: value를 기준으로 compareTo를 overriding
-class edge implements Comparable<edge>{
+class edge2 implements Comparable<edge2>{
     int s;
     int e;
     int v;
-    public edge(int s, int e, int v) {
+    public edge2(int s, int e, int v) {
         this.s = s;
         this.e = e;
         this.v = v;
     }
 
     @Override
-    public int compareTo(edge o) {
+    public int compareTo(edge2 o) {
         return o.v>=this.v? -1:1;
     }
 }
