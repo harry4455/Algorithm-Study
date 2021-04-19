@@ -1,24 +1,27 @@
+/*
+    #16234 인구 이동
+
+    dfs로 방문하지 않은 곳을 시작으로 하여 조건안에 맞는 영역을 list에 담음
+    탐색 후 변동이 있는 경우, 데이터 평균값을 구해서 수정
+
+    이후 다시 초기화 한 뒤, 인구이동이 필요한지 확인하고 sec를 늘려가며 지속적으로 진행
+ */
+
 package BJ;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class BJ16234 {
-    static int[][] arr, check;  // 사람수, 연합국가
+    static int[][] arr;
+    static boolean[][] visited;
     static int N,L,R;
-    final static int[] dx = {0,1,0,-1};
-    final static int[] dy = {1,0,-1,0};
-    static class Info {
-        int x,y;
-        public Info(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+    final static int[] dx = {1,-1,0,0};
+    final static int[] dy = {0,0,1,-1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -27,7 +30,7 @@ public class BJ16234 {
         N = Integer.parseInt(stk.nextToken());
         L = Integer.parseInt(stk.nextToken());
         R = Integer.parseInt(stk.nextToken());
-
+        int sec = 0;
         arr = new int[N][N];
 
         for(int i=0; i<N; i++) {
@@ -37,58 +40,73 @@ public class BJ16234 {
             }
         }
 
-        int result = 0;
-
-        Info info;
         while(true) {
-            int cnt = 0;
-            check = new int[N][N];         // 연합국가의 번호를 확인
-            int[] tot = new int[2501];      // 해당 국가에 포함된 인구의 합
-            int[] number = new int[2501];   // 해당 국가에 속한 칸의 수
-
-            for(int i=0; i<N; i++) {
-                for(int j=0; j<N; j++) {
-                    if(check[i][j] == 0) {
-                        cnt++;
-                        check[i][j] = cnt;
-                        Queue<Info> queue = new LinkedList<>();
-                        queue.offer(new Info(i,j));
-                        while(!queue.isEmpty()) {
-                            info = queue.poll();
-                            int cx = info.x;
-                            int cy = info.y;
-                            tot[cnt] += arr[cy][cx];
-                            number[cnt]++;
-
-                            for(int k=0; k<4; k++) {
-                                int nx = cx + dx[k];
-                                int ny = cy + dy[k];
-                                if(nx>=0  && ny>=0 && nx<N && ny <N && check[ny][nx]==0 && Math.abs(arr[ny][nx]-arr[cy][cx])>=L && Math.abs(arr[ny][nx]-arr[cy][cx])<=R) {
-                                    check[ny][nx] = cnt;
-                                    queue.offer(new Info(ny,nx));
-                                }
-                            }
-                        }
-                    }
-                }
+            visited = new boolean[N][N];    // 방문 초기화
+            if(!check()) {
+                sec++;
+            } else {
+                break;
             }
-
-            boolean change = false;
-            for(int i=0; i<N; i++) {
-                for(int j=0; j<N; j++) {
-                    int country = check[i][j];
-                    int value = tot[country]/number[country];
-                    if(arr[i][j] != value) {
-                        change = true;
-                        arr[i][j] = value;
-                    }
-                }
-            }
-
-            if(!change) break;
-            result++;
         }
+        System.out.println(sec);
+    }
 
-        System.out.println(result);
+    private static boolean check() {
+        List<Node16234> nList;
+        boolean isDone = true;  // 이동이 더 이상 필요없을 경우 true
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                // 방문하지 않은 경우
+                if(!visited[i][j]) {
+                    nList = new LinkedList<>();
+                    nList.add(new Node16234(i,j));
+                    int sum = dfs(i,j,nList,0); // 리스트에 저장된 값의 합
+                    if(nList.size() > 1) {  // 리스트 크기가 1 이상인 경우 (인구이동이 필요한 데이터가 있는 경우
+                        change(sum, nList); // 평균값 계산해서 rodtls
+                        isDone = false;
+                    }
+                }
+            }
+        }
+        return isDone;
+    }
+
+    private static void change(int sum, List<Node16234> nList) {
+        int avg = sum / nList.size();
+        for(Node16234 node : nList) {
+            arr[node.x][node.y] = avg;
+        }
+    }
+
+    private static int dfs(int x, int y, List<Node16234> nList, int sum) {
+        visited[x][y] = true;
+        sum = arr[x][y];
+
+        for(int i=0; i<4; i++) {
+            int nextX = x + dx[i];
+            int nextY = y + dy[i];
+
+            if(nextX<0 || nextX>=N || nextY<0 || nextY>=N) {
+                continue;
+            }
+
+            if(!visited[nextX][nextY]) {
+                int d = Math.abs(arr[x][y] - arr[nextX][nextY]);
+                if(d >= L && d <= R) {
+                    nList.add(new Node16234(nextX, nextY));
+                    sum += dfs(nextX, nextY, nList, sum);
+                }
+            }
+        }
+        return sum;
+    }
+}
+
+class Node16234{
+    int x;
+    int y;
+    public Node16234(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }
