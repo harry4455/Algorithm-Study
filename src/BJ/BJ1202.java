@@ -1,3 +1,9 @@
+/*
+    #1202 보석도둑
+
+    우선순위 큐를 이용한 문제
+ */
+
 package BJ;
 
 import java.io.BufferedReader;
