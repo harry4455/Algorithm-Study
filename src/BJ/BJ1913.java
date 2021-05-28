@@ -1,10 +1,12 @@
-package BJ;/*
+/*
     #1913 달팽이
 
     중심에서 반시계 방향으로 나아가며
     dx,dy 배열로 방향을 정해주며 그려나감, 약간 dfs 때랑 푸는거 비슷
     BJ.Point Class 만들어 주는데 위치 잘못해서 좀 헤맸음
  */
+
+package BJ;
 
 import java.io.BufferedReader;
 import java.io.IOException;
