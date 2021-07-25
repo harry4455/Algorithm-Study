@@ -1,20 +1,22 @@
 package BJ;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class BJ8972 {
-    // 1하좌, 2하, 3하우, 4좌, 5그대로, 6우, 7상좌, 8상, 9상우
-    static int[] dx = {1, 1, 1, 0, 0, 0, -1, -1, -1};
-    static int[] dy = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
+
     static int R,C;
     static Point8972 myArduino;
     static char[][] board;
     static LinkedList<Point8972> crazyArduino = new LinkedList<>();
+
+    // 1하좌, 2하, 3하우, 4좌, 5그대로, 6우, 7상좌, 8상, 9상우
+    static int[] dx = {1, 1, 1, 0, 0, 0, -1, -1, -1};
+    static int[] dy = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
+
     public static void main(String[] args){
-       Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         R = sc.nextInt();
         C = sc.nextInt();
 
@@ -67,7 +69,7 @@ public class BJ8972 {
     }
 
     // 1. 내 아두이노 이동
-    private static boolean moveMyArduino(int i) {
+    static boolean moveMyArduino(int i) {
         int nx = myArduino.x + dx[i];
         int ny = myArduino.y + dy[i];
 
@@ -81,13 +83,13 @@ public class BJ8972 {
     }
 
     // 2. 미친 아두이노 이동
-    private static boolean moveCrazyArduino() {
+    static boolean moveCrazyArduino() {
         int[][] tmp = new int[R][C];
 
         int size = crazyArduino.size();
         for(int i=0; i<size; i++){
             int x = crazyArduino.peek().x;
-            int y = crazyArduino.peek().y;
+            int y = crazyArduino.poll().y;
 
             // 내 아두이노와 가장 가까운 방향을 구하는 변수
             int min = Integer.MAX_VALUE;
@@ -131,7 +133,7 @@ public class BJ8972 {
     }
 
     // 3. 보드 새로 구성하기
-    private static void makeBoard() {
+    public static void makeBoard() {
         board = new char[R][C];
 
         for(int i=0; i<R; i++) {
@@ -140,7 +142,7 @@ public class BJ8972 {
 
         board[myArduino.x][myArduino.y] = 'I';      // 내 아두이노 위치 입력
 
-        for(int i=0; i<crazyArduino.size(); i++){
+        for(int i = 0; i < crazyArduino.size(); i++){
             Point8972 p = crazyArduino.poll();
             board[p.x][p.y] = 'R';
             crazyArduino.add(p);
