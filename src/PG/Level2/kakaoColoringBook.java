@@ -5,7 +5,7 @@
  * bfs로 풀이 가능
  */
 
-package PG;
+package PG.Level2;
 
 import java.util.Arrays;
 import java.util.LinkedList;
