@@ -4,39 +4,20 @@
  *
  * 믿거나~말거나~ 2021 네이버 상반기 채용 4번 문제랑 유사하대요~
  *
+ * 빡세게 구현하는 문제.. 몇 가지 방법을 시도했으나 마지막에 블로그를 참고해서 풀이 완성함.
  */
 
 package PG.etc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class FillPuzzles {
-    static int len, count;
-    static int[][] g,t,tmp; //g : game_board, t : table
-    static int[] p =new int[2]; // 빈칸과 블록의 가장 작은 x 값과 y값 -> x,y 값 부터 6x6행렬로 오려내기 위함
-    static int[] dx = {-1, 1, 0, 0};
-    static int[] dy = {0, 0, -1, 1}; // 빈칸과 블록을 뽑아내기 위해 상하좌우를 정의할 배열
-    static List<Block> blankList = new ArrayList<Block>();
-    static List<Block> tableList = new ArrayList<Block>();
 
-    private static class Block {   // 빈칸과 블록을 담기 위한 개체 정의
-        public int[][] arr;     // 배열을 담음
-        public Integer n;       // 빈칸 혹은 블록의 갯수
-        Block(int[][] a, int n, int x, int y) {
-            arr = new int[6][6];    // 빈칸과 블록의 갯수는 최대 6개 이므로 6*6 배열로 구성
-            for(int i=0; i<6; i++) {
-                for(int j=0; j<6; j++) {
-                    if(x+i < len && y+j < len) {
-                        arr[i][j] = a[x+i][y+j];
-                    }
-                }
-            }
-            this.n = n;
-        }
-    }
+    static int[] dx = {1,-1,0,0};
+    static int[] dy = {0,0,1,-1};
+    static boolean[][] visitBoard;
+    static boolean[][] visitTable;
+    static int len;
 
     public static void main(String[] args) {
         int[][] game_board = {{1,1,0,0,1,0},{0,0,1,0,1,0},{0,1,1,0,0,1},{1,1,0,1,1,1},{1,0,0,0,1,0},{0,1,1,1,0,0}};
@@ -47,137 +28,167 @@ public class FillPuzzles {
 
     public static int solution(int[][] game_board, int[][] table) {
         int answer = 0;
-        len  = game_board.length;
-        g = new int[len][len];
-        t = new int[len][len];
 
+        len = game_board.length;
+        visitBoard = new boolean[len][len];
+        visitTable = new boolean[len][len];
+
+        // game_board에서 빈 공간을 추출
         for(int i=0; i<len; i++) {
             for(int j=0; j<len; j++) {
-                g[i][j] = game_board[i][j];
-                t[i][j] = table[i][j];
-            }
-        }
-
-        for(int i=0; i<len; i++) {
-            for(int j=0; j<len; j++) {
-                if(g[i][j] == 0) {
-                    tmp = new int[len][len];    // 빈 공간을 복사할 배열
-                    p[0] = i;
-                    p[1] = j;
-                    count = 0;
-                    findBlock(i,j,0);
-                    blankList.add(new Block(tmp, count, p[0], p[1]));    // 찾은 빈 공간 리스트에 추가
+                if(game_board[i][j] == 1 || visitBoard[i][j]) { // 빈공간이 아니거나 이미 방문한 경우
+                    continue;
                 }
-                if(t[i][j] == 1) {              // 블록 발생
-                    tmp = new int[len][len];    // 블록을 복사할 배열
-                    p[0] = i;
-                    p[1] = j;
-                    count = 0;
-                    findBlock(i,j,1);
-                    if(count<=6) tableList.add(new Block(tmp, count, p[0], p[1]));  //찾은 블록 리스트에 추가
-                }
-            }
-        }
 
-        // 공간 수가 많은 것 부터 오름차순
-        blankList.sort((o1, o2) -> (o2.n).compareTo(o1.n));
-        // 블록 수가 많은 것 부터 오름차순
-        tableList.sort((o1, o2) -> (o2.n).compareTo(o1.n));
+                // 빈 공간이 존재하면 bfs로 해당 공간의 좌표를 찾아 클래스 생성 후 리스트로 변환
+                // 좌표 리스트를 가지고 2차원 배열에 그려준다 (0,0 부터 시작)
+                List<Position> emptyCoord = extractBlock(game_board, new Position(i, j), true);
+                int[][] empty = makeBlock(emptyCoord);
 
-        for (Block o1 : blankList) {
-            for (int j = 0; j < tableList.size(); j++) {
-                Block o2 = tableList.get(j);
-                if (o1.n < o2.n) {
-                }   // 빈 공간보다 블록수가 더 많다면 다음 블록 탐색
-                else if (o1.n.equals(o2.n)) {     // 빈 공간 갯수와 블록수가 같은 경우 모양 확인
-                    if (fitBlock(o1.arr, o2.arr, o1.n)) {    // 블록이 빈 공간에 딱 들어갈 경우
-                        answer += o1.n;
-                        tableList.remove(j);
-                        break;
+                // table에서 블록 영역 추출
+                match:
+                for(int k=0; k<len; k++) {
+                    for(int l=0; l<len; l++) {
+                        if(table[k][l] == 0 || visitTable[k][l]) {
+                            continue;
+                        }
+
+                        // 블록 영역의 좌표(Position)를 가지는 리스트 변환
+                        List<Position> blockCoord = extractBlock(table, new Position(k,l), false);
+
+                        // '빈 영역' 과 '블럭' 의 좌표 갯수가 다르면 스킵
+                        if(emptyCoord.size() != blockCoord.size()) continue;
+
+                        // 블록 좌표 리스트를 가지고 2차원 배열에 그려준다
+                        // row, col 길이를 따로 뽑아주는 이유는 블록 회전시 2차원 배열에 0,0 부터 그리기 위함
+                        int[][] block = makeBlock(blockCoord);
+                        int row = blockCoord.get(0).maxX - blockCoord.get(0).minX + 1;  // 블럭 행의 길이
+                        int col = blockCoord.get(0).maxY - blockCoord.get(0).minY + 1;  // 블럭 열의 길이
+
+                        // 빈 영역과 블럭 모양 확인
+                        for(int z=0; z<4; z++) {
+                            // 모양이 동일할 경우 table에서 해당 영역은 0으로 지워준다.
+                            if(isSame(empty, block)) {
+                                for(int x=0; x<blockCoord.size(); x++) {
+                                    Position rollback = blockCoord.get(x);
+                                    table[rollback.x][rollback.y] = 0;
+                                }
+                                answer += blockCoord.size();
+                                break match;
+                            }
+
+                            // 매칭이 안된 경우
+                            // row, col 길이를 swap하는 이유는 90 회전시, 행/열 길이가 바뀌기 때문에 2차원 배열 0,0 부터 그리기 위함
+                            block = rotateBlock(block, row, col);
+                            int tmp = row;
+                            row = col;
+                            col = tmp;
+                        }
                     }
-                } else {
-                    break;  // 빈 공간의 수가 더 많을 경우 다음 빈공간 탐색
                 }
+
+                visitTable = new boolean[len][len];
             }
         }
         return answer;
     }
 
-    private static boolean fitBlock(int[][] o1, int[][] o2, int n) {
-        int cnt;    //빈 공간에 블록이 위치하면 cnt++
-        int[] degree = {0,90,180,270};  // 회전각
-        for(int r=0; r<4; r++) {
-            int[][] rotate = rotateArr(o2, degree[r]);  // 회전된 배열 반환
-            for(int x=0; x<6; x++) {    // rotate 배열의 시작점을 배정
-                for(int y=0; y<6; y++) {
-                    cnt = 0;
-                    for(int i=0; i<6; i++) {
-                        for(int j=0; j<6; j++) {
-                            if(0 <= x+i && x+i < 6 && 0 <= y+j && y+j < 6) {
-                                if(o1[i][j] == 1 && rotate[x+i][y+j] == 1) cnt++;
-                                if((o1[i][j] == 1 && rotate[x+i][y+j] == 0) || (o1[i][j] == 0 && rotate[x+i][y+j] == 1)) {
-                                    // 맞지 않는 모양일 경우
-                                    // 강제 break 걸기
-                                    i = 7;
-                                    j = 7;
-                                }
-                            }
-                        }
-                    }
-                    if(cnt == n) return true;   // 딱 맞는 모양일 경우 true 반환
+    private static int[][] rotateBlock(int[][] block, int row, int col) {
+        int[][] tmpBlock = new int[len][len];
+        for(int i=0; i<row; i++) {
+            for(int j=0; j<col; j++) {
+                tmpBlock[j][row - 1 - i] = block[i][j];
+            }
+        }
+        return tmpBlock;
+    }
+
+    private static boolean isSame(int[][] empty, int[][] block) {
+        for(int i=0; i < empty.length; i++) {
+            for(int j=0; j < empty[0].length; j++) {
+                if(block[i][j] != empty[i][j]) {
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
-    private static int[][] rotateArr(int[][] arr, int degree) {   // 회전 각에 따른 결과를 배열로 반환
-        int[][] rotate = new int[6][6];
-        for(int i=0; i<6; i++) {
-            for(int j=0; j<6; j++) {
-                // 정체를 파악하기!!!!!
-                switch (degree) {
-                    case 0:
-                        rotate[i][j] = arr[i][j];
-                        break;
-                    case 90:
-                        rotate[i][j] = arr[5 - i][j];
-                        break;
-                    case 180:
-                        rotate[i][j] = arr[5 - i][5 - j];
-                        break;
-                    case 270:
-                        rotate[i][j] = arr[i][5 - j];
-                        break;
-                }
-            }
+    private static int[][] makeBlock(List<Position> list) {
+        int[][] result = new int[len][len];
+        int minX = list.get(0).minX;
+        int minY = list.get(0).minY;
+
+        int emptyBlockSize = list.size();
+        for (Position p : list) {
+            result[p.x - minX][p.y - minY] = 1;
         }
-        return rotate;
+
+        return result;
     }
 
-    // 빈 공간 혹은 블록의 모양을 탐색
-    //choice 0:빈 공간 찾기 1:블록 찾기
-    private static void findBlock(int i, int j, int choice) {
-        count++;
-        if(choice == 0) {
-            g[i][j] = 1;
+    private static List<Position> extractBlock(int[][] board, Position p, boolean isBoard) {
+        int boardSize = board.length;
+        List<Position> list = new ArrayList<>();
+        Queue<Position> queue = new LinkedList<>();
+
+        queue.offer(p);
+
+        if(isBoard) {
+            visitBoard[p.x][p.y] = true;
         } else {
-            t[i][j] = 0;
+            visitTable[p.x][p.y] = true;
         }
 
-        if(i < p[0]) p[0] = i;
-        if(j < p[1]) p[1] = j;
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int maxY = Integer.MIN_VALUE;
 
-        tmp[i][j] = 1;
-        for(int z=0; z<4; z++) {    // dfs로 모양을 탐색
-            int x = i + dx[z];
-            int y = j + dy[z];
-            if(x>=0 && y>=0 && x<len && y<len) {
-                if(choice == 0 && g[x][y] == 0) findBlock(x,y,choice);
-                if(choice == 1 && t[x][y] == 1) findBlock(x,y,choice);
+        while(!queue.isEmpty()) {
+            Position start = queue.poll();
+            list.add(start);
+            minX = Math.min(start.x, minX);
+            minY = Math.min(start.y, minY);
+            maxX = Math.max(start.x, maxX);
+            maxY = Math.max(start.y, maxY);
+
+            for(int i=0; i<4; i++) {
+                int row = start.x + dx[i];
+                int col = start.y + dy[i];
+
+                if(row < 0 || col < 0 || row > boardSize - 1 || col > boardSize - 1) continue;
+
+                if(isBoard) {
+                    if(board[row][col] == 1 || visitBoard[row][col]) continue;
+                    visitBoard[row][col] = true;
+                } else {
+                    if(board[row][col] == 0 || visitTable[row][col]) continue;
+                    visitTable[row][col] = true;
+                }
+
+                queue.offer(new Position(row, col));
             }
         }
+
+        list.get(0).minX = minX;
+        list.get(0).minY = minY;
+        list.get(0).maxX = maxX;
+        list.get(0).maxY = maxY;
+
+        return list;
     }
 
-
+    private static class Position {
+        int x;
+        int y;
+        int minX;
+        int minY;
+        int maxX;
+        int maxY;
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
 }
