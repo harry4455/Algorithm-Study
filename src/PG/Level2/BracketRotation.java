@@ -1,3 +1,8 @@
+/*
+ * # 괄호 회전하기
+ *
+ */
+
 package PG.Level2;
 
 import java.util.Stack;
@@ -50,7 +55,7 @@ public class BracketRotation {
                 return false;
             }
         }
-        return stack.isEmpty() ? true : false;
+        return stack.isEmpty();
 
     }
 }

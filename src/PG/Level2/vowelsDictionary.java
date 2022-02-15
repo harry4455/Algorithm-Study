@@ -1,7 +1,6 @@
 /*
  * # 모음 사전
  *
- *
  */
 package PG.Level2;
 
