@@ -32,7 +32,7 @@ public class BiggestSquare {
             }
         }
 
-        for(int i=0; i<sizeRow; i++) {
+        for(int i=1; i<sizeRow; i++) {
             for(int j=0; j<sizeCol; j++) {
                 if(board[i][j] == 0) {  // 0일 경우
                     dp[1][j] = 0;
@@ -44,7 +44,7 @@ public class BiggestSquare {
                         if(dp[1][j-1] == 0 || dp[0][j] == 0 || dp[0][j-1] == 0) {
                             dp[1][j] = 1;
                         } else if(dp[1][j-1] == dp[0][j] && dp[0][j] == dp[0][j-1]) {
-                            dp[1][j] = dp[1][j-1] + 1;
+                            dp[1][j] = dp[0][j-1] + 1;
                         } else {    // 셋 다 다르면
                             if(dp[1][j-1] <= dp[0][j-1] && dp[1][j-1] <= dp[0][j]) {
                                 dp[1][j] = dp[1][j-1] + 1;
