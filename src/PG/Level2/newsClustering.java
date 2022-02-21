@@ -52,10 +52,10 @@ public class newsClustering {
         Collections.sort(multiSet1);
         Collections.sort(multiSet2);
 
-        System.out.println("multiSet1");
-        System.out.println(multiSet1);
-        System.out.println("multiSet2");
-        System.out.println(multiSet2);
+//        System.out.println("multiSet1");
+//        System.out.println(multiSet1);
+//        System.out.println("multiSet2");
+//        System.out.println(multiSet2);
 
         for(String s : multiSet1) {
             // 교집합
@@ -69,7 +69,7 @@ public class newsClustering {
         System.out.println("union");
         System.out.println(union);
 
-        for(String s : multiSet2) union.add(s);
+        union.addAll(multiSet2);
 
         System.out.println("union");
         System.out.println(union);

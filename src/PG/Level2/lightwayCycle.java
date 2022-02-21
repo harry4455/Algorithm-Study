@@ -13,6 +13,7 @@
 package PG.Level2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class lightwayCycle {
     // 아래, 왼, 위, 오른 순서
@@ -23,11 +24,11 @@ public class lightwayCycle {
 
     public static void main(String[] args) {
         String[] grid = {"SL","LR"};
-        solution(grid);
+        System.out.println(Arrays.toString(solution(grid)));
     }
 
     public static int[] solution(String[] grid) {
-        ArrayList<Integer> answer = new ArrayList<Integer>();
+        ArrayList<Integer> answer = new ArrayList<>();
 
         R = grid.length;
         C = grid[0].length();
@@ -49,15 +50,12 @@ public class lightwayCycle {
     private static int light(String[] grid, int r, int c, int d) {
         int cnt = 0;    // 이동거리
 
-        while(true) {
-            if(visited[r][c][d]) {
-                break;
-            }
+        while (!visited[r][c][d]) {
 
             cnt++;
             visited[r][c][d] = true;
 
-            if(grid[r].charAt(c) == 'L') {
+            if (grid[r].charAt(c) == 'L') {
                 d = d == 0 ? 3 : d - 1;
             } else if (grid[r].charAt(c) == 'R') {
                 d = d == 3 ? 0 : d + 1;
