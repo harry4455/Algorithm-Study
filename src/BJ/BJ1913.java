@@ -12,81 +12,67 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class BJ1913{
-    static int N, target;
-    static int[][] snail;
-    static Point targetPosition;
-    public static void main(String[] args) throws IOException {
+import java.io.*;
+
+public class BJ1913 {
+
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = Integer.parseInt(br.readLine());
-        target = Integer.parseInt(br.readLine());
-        snail = new int[N][N];
-        makeSnail(snail);
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<N; i++) {
-            for(int j=0; j<N; j++) {
-                sb.append(snail[i][j]);
-                if(j != N-1) sb.append(" ");
-                if(j == N-1) sb.append("\n");
-            }
-        }
-        sb.append(targetPosition.row+1).append(" ").append(targetPosition.col+1);
-        System.out.println(sb.toString());
+        int n = Integer.parseInt(br.readLine());
+        int t = Integer.parseInt(br.readLine());
 
-
-
+        solve(n, t);
     }
-    static int[] dx = {-1,0,1,0};
-    static int[] dy = {0,1,0,-1};
-    static int number = 1;
 
-    private static void makeSnail(int[][] snail) {
-        int row = N/2;
-        int col = N/2;
-        snail[row][col] = 1;
-        int length = 1;
-        int dirIdx = 0;
+    public static void solve(int n, int t){
+        int[][] map = new int[n][n];
+        int value = 1;
+
+        int x = n/2, y = n/2;
+
+        int limit = 1;
+
         while(true) {
-            // 수직 방향
-            for(int i=0; i<length; i++) {
-                row += dx[dirIdx];
-                col += dy[dirIdx];
-                snail[row][col] = incNum(row, col);
-            }
-            dirIdx = (dirIdx+1)%4;
+            // 상우하좌 순서
 
-            // 수평 방향
-            for(int i=0; i<length; i++) {
-                row += dx[dirIdx];
-                col += dy[dirIdx];
-                snail[row][col] = incNum(row, col);
+            for(int i=0; i<limit; i++) {
+                map[y--][x] = value++;
             }
-            dirIdx = (dirIdx+1)%4;
-            if(length == N-1) break;
-            length++;
+
+            if(value-1 == n*n) break;
+
+            for(int i=0; i<limit; i++) {
+                map[y][x++] = value++;
+            }
+
+            limit++;
+
+            for(int i=0; i<limit; i++) {
+                map[y++][x] = value++;
+            }
+
+            for(int i=0; i<limit; i++) {
+                map[y][x--] = value++;
+            }
+            limit++;
         }
 
-        // 마지막 줄 처리
-        for(int i=0; i<length; i++) {
-            row += dx[0];
-            col += dy[0];
-            snail[row][col] = incNum(row, col);
+        StringBuilder sb = new StringBuilder();
+
+        int tx = 0, ty = 0;
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<n; j++) {
+                if(t == map[i][j]) {
+                    tx = j+1;
+                    ty = i+1;
+                }
+                sb.append(map[i][j]).append(" ");
+            }
+            sb.append("\n");
         }
-    }
+        sb.append(ty).append(" ").append(tx);
 
-    private static int incNum(int row, int col) {
-        int nextN = ++number;
-        if(nextN == target) targetPosition = new Point(row, col);
-        return  nextN;
-    }
-}
-
-class Point {
-    int row;
-    int col;
-    public Point(int row, int col) {
-        this.row = row;
-        this.col = col;
+        System.out.println(sb.toString());
     }
 }
