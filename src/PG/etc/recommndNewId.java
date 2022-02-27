@@ -4,7 +4,7 @@
  * 2021 카카오 블라인드 채용 기출
  * 
  * 조건대로 풀어도 문제는 없지만, 정규식을 활용해서 풀어야 원하는 채점기준을 받을 수 있을듯
- * -> 정규식 활용해서 다시 풀이하기
+ * -> 정규식 활용해서 다시 풀이하기 (solution2)
  */
 
 package PG.etc;
@@ -14,6 +14,7 @@ public class recommndNewId {
     public static void main(String[] args) {
         String new_id = "...!@BaT#*..y.abcdefghijklm";
         System.out.println(solution(new_id));
+        System.out.println(solution2(new_id));
     }
 
     public static String solution(String new_id) {
@@ -78,4 +79,32 @@ public class recommndNewId {
         answer = String.valueOf(trans_id3);
         return answer;
     }
+
+    public static String solution2(String new_id) {
+        String answer = "";
+        StringBuilder tmpId = new StringBuilder(new_id.toLowerCase());
+
+        tmpId = new StringBuilder(tmpId.toString().replaceAll("[^-_.a-z0-9]", ""));
+        tmpId = new StringBuilder(tmpId.toString().replaceAll("[.]{2,}", "."));
+        tmpId = new StringBuilder(tmpId.toString().replaceAll("^[.]|[.]$", ""));
+
+        if(tmpId.toString().equals("")) {
+            tmpId.append("a");
+        }
+
+        if(tmpId.length() >= 16) {
+            tmpId = new StringBuilder(tmpId.substring(0, 15));
+            tmpId = new StringBuilder(tmpId.toString().replaceAll("^[.]|[.]$", ""));
+        }
+
+        if(tmpId.length() <= 2) {
+            while(tmpId.length() < 3) {
+                tmpId.append(tmpId.charAt(tmpId.length() - 1));
+            }
+        }
+
+        answer = tmpId.toString();
+        return answer;
+    }
+
 }

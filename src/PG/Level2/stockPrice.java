@@ -12,7 +12,8 @@ import java.util.Stack;
 
 public class stockPrice {
     public static void main(String[] args) {
-        int[] prices = {1,2,3,2,3};
+        //int[] prices = {1,2,3,2,3};
+        int[] prices = {1,2,4,2,3};
 
         System.out.println(Arrays.toString(solution(prices)));
     }
