@@ -3,6 +3,7 @@
  */
 package BJ;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class BJ15649 {
@@ -17,7 +18,7 @@ public class BJ15649 {
         N = sc.nextInt();
         M = sc.nextInt();
         selected = new int[M+1];
-        used = new int[M+1];
+        used = new int[N+1];
 
         solution(1);
 
